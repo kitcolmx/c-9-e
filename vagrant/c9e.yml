@@ -1,0 +1,21 @@
+---
+- hosts: all
+  become: true
+  tasks:
+    - name: Install Laradock requirements
+      yum:
+        name: git
+        state: present
+
+    - name: Get Laradock
+      git:
+        repo: https://github.com/laradock/laradock.git
+        dest: /home/vagrant/
+      register: get_laradock
+
+    - name: Copy .env File
+      copy:
+        src: ~/laradock/env-example
+        dest: ~/laradock/.env
+        owner: vagrant
+        group: vagrant

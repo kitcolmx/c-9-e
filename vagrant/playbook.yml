@@ -26,6 +26,12 @@
         name: docker-ce
         state: latest
 
+    - name: Adding vagrant User to Group docker
+      user:
+        name: vagrant
+        groups: docker
+        append: yes
+
     - name: enable and start Docker
       systemd:
         name: docker.service
