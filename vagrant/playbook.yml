@@ -1,0 +1,46 @@
+---
+- hosts: all
+  become: true
+  tasks:
+    - name: Upgrade all packages 
+      yum: 
+        name: '*'
+        state: latest
+
+    - name: Install Docker-CE requirements
+      yum:
+        name:
+          - yum-utils
+          - device-mapper-persistent-data
+          - lvm2
+        state: present
+
+    - name: add docker repo
+      shell: "yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo"
+      args:
+        chdir: "/etc/yum.repos.d"
+        creates: docker-ce.repo
+
+    - name: Install Docker-CE
+      yum:
+        name: docker-ce
+        state: latest
+
+    - name: enable and start Docker
+      systemd:
+        name: docker.service
+        state: started
+        daemon_reload: yes
+        enabled: yes
+
+    - name: Get docker-compose
+      get_url:
+        url: "https://github.com/docker/compose/releases/download/1.23.2/docker-compose-{{ansible_system}}-{{ansible_machine}}"
+        dest: /usr/local/bin/docker-compose
+      register: get_compose
+
+    - name: chmod docker-compose
+      file:
+        path: /usr/local/bin/docker-compose
+        mode: "a+x"
+      when: get_compose.changed
