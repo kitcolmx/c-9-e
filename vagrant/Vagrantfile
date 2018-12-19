@@ -15,13 +15,8 @@ Vagrant.configure("2") do |config|
 
   # Every Vagrant development environment requires a box. You can search for
   # boxes at https://atlas.hashicorp.com/search.
-<<<<<<< HEAD
   config.vm.define "centos" do |server|
     server.vm.hostname = "centos"
-=======
-  config.vm.define "proen" do |server|
-    server.vm.hostname = "proen"
->>>>>>> c3e2bdfd98b214f84e68149b5daa180688b4e225
     server.vm.network :private_network, ip: "192.168.33.35"
 
     # VirtualBoxのGUI上の名前を設定する
@@ -29,11 +24,7 @@ Vagrant.configure("2") do |config|
       vb.name = config.vm.box.gsub(/\//, "_") + "_" + server.vm.hostname
     end
 
-<<<<<<< HEAD
-    server.vm.provision "ansible_local" do |ansible|
-=======
-    server.vm.provision "install_docker", type: "ansible_local" do |ansible|
->>>>>>> c3e2bdfd98b214f84e68149b5daa180688b4e225
+    server.vm.provision "install_node", type: "ansible_local" do |ansible|
      ansible.playbook = "playbook.yml"
      ansible.verbose = ""
     end
