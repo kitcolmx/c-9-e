@@ -7,10 +7,18 @@
         name: '*'
         state: latest
 
-    - name: add docker repo
+    - name: add Node.js repo
       shell: "curl -sL https://rpm.nodesource.com/setup_10.x | bash -"
 
     - name: Install Node.js
       yum:
         name: nodejs
+        state: latest
+
+    - name: add Yarn repo
+      shell: "curl --silent --location https://dl.yarnpkg.com/rpm/yarn.repo | tee /etc/yum.repos.d/yarn.repo"
+
+    - name: Install Yarn
+      yum:
+        name: yarn
         state: latest
