@@ -33,3 +33,9 @@ app.use(function(err, req, res, next) {
 });
 
 module.exports = app;
+
+var mongoose = require('mongoose');
+mongoose.Promise = require('bluebird');
+mongoose.connect('mongodb://localhost/mevn-c9e', { promiseLibrary: require('bluebird') })
+  .then(() =>  console.log('connection succesful'))
+  .catch((err) => console.error(err));
